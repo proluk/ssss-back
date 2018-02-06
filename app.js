@@ -32,6 +32,7 @@ setTimeout(() => {
         services.empikschool,
         services.zdaszto
     ]);
+    mailer.sendErrorMail(service.profimatura);
     console.log("=======sent mail========");
 },5000);
 
@@ -57,6 +58,7 @@ function runTestServiceStatus(service){
             timestamp: new Date(),
             status: JSON.stringify(error)
         });
+        mailer.sendErrorMail(service);
         setTimeout(() => {
             runTestServiceStatus(service);
         }, 1800000);
