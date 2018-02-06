@@ -22,9 +22,9 @@ module.exports = class Mail {
         });
     }
     prepareHTML(array){
-        let preparedHTML = '<ul>';
+        let preparedHTML = 'Raport S4:</br><ul>';
         for ( let i = 0 ; i < array.length ; i++ ){
-            if ( array[i].getStatus() !== '200' ){
+            if ( array[i].getStatus() != '200' ){
                 preparedHTML += '<li>'+array[i].getId()+': <span style="color: red;">'+array[i].getStatus()+'</span></li>'
             } else {
                 preparedHTML += '<li>'+array[i].getId()+': <span style="color: green;">'+array[i].getStatus()+'</span></li>'
@@ -42,6 +42,6 @@ module.exports = class Mail {
         });
     }
     sendErrorMail(service){
-        preparedHTML += '<li>'+service.getId()+': <span style="color: red;">'+service.getStatus()+'</span></li>';
+        preparedHTML += 'Raport S4:</br><li>'+service.getId()+': <span style="color: red;">'+service.getStatus()+'</span></li>';
     }
 }
