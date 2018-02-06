@@ -11,6 +11,9 @@ module.exports = class Service {
     getId(){
         return this.id;
     }
+    getStatus(){
+        return this.status;
+    }
     changeValues(status, timestamp){
         this.status = status;
         this.timestamp = timestamp;

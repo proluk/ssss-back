@@ -14,7 +14,7 @@ app.get('/mailview', (req, res) => {
 
 let mailer = new Mail(nodemailer);
 mailer.testConnection();
-mailer.sendOkMail();
+
 
 let services = {
     profimatura: new Service('profimatura','https://profimatura.pl'),
@@ -23,6 +23,18 @@ let services = {
     empikschool: new Service('empikschool','https://empikschool.com'),
     zdaszto: new Service('zdaszto','https://zdasz.to')
 };
+
+setTimeout(() => {
+    mailer.sendOkMail([
+        services.profimatura,
+        services.profilingua,
+        services.disneyenglishkursy,
+        services.empikschool,
+        services.zdaszto
+    ]);
+    console.log("=======sent mail========");
+},5000);
+
 
 runTestServiceStatus(services.profimatura);
 runTestServiceStatus(services.profilingua);
