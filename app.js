@@ -32,8 +32,8 @@ setTimeout(() => {
         services.empikschool,
         services.zdaszto
     ]);
-    mailer.sendErrorMail(service.profimatura);
-    console.log("=======sent mail========");
+    mailer.sendErrorMail(services.profimatura);
+    console.log("=======sent test mail========");
 },5000);
 
 
