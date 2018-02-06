@@ -24,12 +24,12 @@ module.exports = class Mail {
     sendOkMail(){
         this.transporter.sendMail({
             from: 'ssss-powiadomienia@gmail.com',
-            to: ['Lukasz_Prokopiuk@wsip.com.pl','Sylwia_Besz-Miazga@wsip.com.pl'],
-            subject: 'System Sprawdzający Stan Serwisów - SSSS Powiadomienia',
-            html: {path: 'https://www.google.pl/search?q=snake+icon&dcr=0&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiruoeunZHZAhUC6CwKHfqCB3kQ_AUICigB&biw=1920&bih=1069'}
+            to: ['Lukasz_Prokopiuk@wsip.com.pl'],
+            subject: 'IT - Powiadomienie z Systemu sprawdzającego stan serwisów ',
+            html: {path: ''}
         });
     }
     sendErrorMail(){
-        
+
     }
 }

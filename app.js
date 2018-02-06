@@ -3,10 +3,17 @@ const request = require('request');
 const nodemailer = require('nodemailer');
 const Service = require('./modules/Service');
 const Mail = require('./modules/Mail');
+const express = require('express');
+const app = express();
+
+app.set('view engine', 'ejs');
+
+app.get('/mailview', (req, res) => {
+    res.render('index');
+});
 
 let mailer = new Mail(nodemailer);
 mailer.testConnection();
-mailer.sendOkMail();
 
 let services = {
     profimatura: new Service('profimatura','https://profimatura.pl'),
@@ -39,7 +46,7 @@ function runTestServiceStatus(service){
         });
         setTimeout(() => {
             runTestServiceStatus(service);
-        }, 30000);
+        }, 1800000);
     }).on('response',function(response) {
         services[service.getId()].changeValues(response.statusCode, new Date());
         io.sockets.emit('updateStatus', {
@@ -49,10 +56,13 @@ function runTestServiceStatus(service){
         });
         setTimeout(() => {
             runTestServiceStatus(service);
-        }, 30000);               
+        }, 1800000);               
     });
 }
 
-const port = 8080;
+app.listen(3001, function(){
+    console.log("http listen");
+});
+const port = 8082;
 io.listen(port);
 console.log('listening on port ', port);
