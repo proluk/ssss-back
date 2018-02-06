@@ -26,7 +26,26 @@ module.exports = class Mail {
             from: 'ssss-powiadomienia@gmail.com',
             to: ['Lukasz_Prokopiuk@wsip.com.pl'],
             subject: 'IT - Powiadomienie z Systemu sprawdzającego stan serwisów ',
-            html: {path: ''}
+            html: `
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>IT - System Sprawdzający Stan Serwisów</title>
+                </head>
+                <body style="padding: 0; margin: 0;">
+                    <style type="text/css">
+                        @import url('https://fonts.googleapis.com/css?family=Audiowide|Righteous|Russo+One');
+                    </style> 
+                    <div style="display: block; background-color: #000; color: #fff; font-family: 'Audiowide', cursive;">
+                        <%- include logo.ejs %>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <span style="font-size: 40px;">S<sup>4</sup></span>
+                            <span style="display: block;">SYSTEM SPRAWDZAJĄCY STAN SERWISÓW</span>
+                        </div>
+                    </div>
+                    Raport
+                </body>
+            </html>`;
         });
     }
     sendErrorMail(){

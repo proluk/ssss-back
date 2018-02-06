@@ -14,6 +14,7 @@ app.get('/mailview', (req, res) => {
 
 let mailer = new Mail(nodemailer);
 mailer.testConnection();
+mailer.sendOkMail();
 
 let services = {
     profimatura: new Service('profimatura','https://profimatura.pl'),
