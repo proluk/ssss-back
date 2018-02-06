@@ -6,6 +6,8 @@ const Mail = require('./modules/Mail');
 
 let mailer = new Mail(nodemailer);
 mailer.testConnection();
+mailer.sendOkMail();
+
 let services = {
     profimatura: new Service('profimatura','https://profimatura.pl'),
     profilingua: new Service('profilingua','https://www.profi-lingua.pl'),
