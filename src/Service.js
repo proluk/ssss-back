@@ -39,13 +39,13 @@ class Service extends Component {
     updateStatus(data){
         this.setState({
             serviceName: this.props.serviceName,
-            status: data.status.toString(),
+            status: data.status,
             timestamp: data.timestamp
         });
     }
     setCurrentState(data){
         this.setState({
-            status: data.status.toString(),
+            status: data.status,
             timestamp: data.timestamp
         });
     }
@@ -64,6 +64,7 @@ class Service extends Component {
         const color = this.state.status == '200' ? 'green' : 'red';
         const bgColor = this.state.status == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
+        const status = this.state.status.code != undefined ? this.state.status.code : this.state.status;
         return (
             <div className="ServiceBlock">
                 <div className="ServiceBlock-title">
@@ -72,7 +73,7 @@ class Service extends Component {
                 <div className={"ServiceBlock-status "+ color} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
                     <MdCloudCircle className="Time"/>
                     <div className={"ServiceBlock-status-more "+visible+" "+bgColor}>
-                        Status<br/>{this.state.status}
+                        Status<br/>{status}
                     </div>
                 </div>
 

@@ -19,7 +19,7 @@ class App extends Component {
       sockets: 0
     };
 
-    this.socket = socket('http://localhost:8082');
+    this.socket = socket('http://172.16.1.103:8082');
   }
   componentDidMount() {
     this.socket.on('updateSockectsNumber', (data) => {
@@ -81,6 +81,9 @@ class App extends Component {
         </SocketProvider>
         <SocketProvider>
           <Service serviceName="zdasz.to" serviceId="zdaszto"/>
+        </SocketProvider>
+        <SocketProvider>
+          <Service serviceName="profikids.pl" serviceId="profikids"/>
         </SocketProvider>
       </div>
     );
