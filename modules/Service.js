@@ -16,7 +16,15 @@ module.exports = class Service {
         return this.name;
     }
     getStatus(){
-        return this.status.code != undefined ? this.status.code : this.status;
+        if ( this.status.code != undefined ) {
+            if ( this.status.code == 'EAI_AGAIN' ) {
+                return 'DNS lookup timed out error';
+            } else {
+                return this.status.code;
+            }
+        } else {
+            return this.status
+        }
     }
     getTime(){
         return this.timestamp;

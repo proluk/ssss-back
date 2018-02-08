@@ -24,7 +24,7 @@ module.exports = class Mail {
         });
     }
     prepareHTML(array){
-        let preparedHTML = '<ul>';
+        let preparedHTML = 'Raport:<br/><ul>';
         for ( let i = 0 ; i < array.length ; i++ ){
             if ( array[i].getStatus() == '200' ){
                 preparedHTML += '<li>'+array[i].getName()+' status: <span style="color: green;">OK</span></li>'
@@ -44,11 +44,11 @@ module.exports = class Mail {
         });
     }
     sendErrorMail(service){
-        let preparedHTML = '<li>'+service.getName()+' status: <span style="color: red;">'+service.getStatus()+'</span></li>';
+        let preparedHTML = 'Raport:<br/><ul><li>'+service.getName()+' status: <span style="color: red;">'+service.getStatus()+'</span></li></ul>';
         this.transporter.sendMail({
             from: 'ssss-powiadomienia@gmail.com',
             to: ['Lukasz_Prokopiuk@wsip.com.pl','Sylwia_Besz-Miazga@wsip.com.pl','Artur_Stopinski@wsip.com.pl','Marcin_Lochowski@wsip.com.pl'],
-            subject: 'Achtung! - IT - Powiadomienie z Systemu sprawdzającego stan serwisów',
+            subject: 'UWAGA! - IT - Powiadomienie z Systemu sprawdzającego stan serwisów',
             html: preparedHTML
         });
     }

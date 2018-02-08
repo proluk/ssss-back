@@ -22,7 +22,9 @@ let services = {
     disneyenglishkursy: new Service('disneyenglishkursy','https://disneyenglishkursy.pl','disneyenglishkursy.pl'),
     empikschool: new Service('empikschool','https://empikschool.com','empikschool.com'),
     zdaszto: new Service('zdaszto','https://zdasz.to','zdasz.to'),
-    profikids: new Service('profikids','https://profikids.pl','profikids.pl')
+    planer: new Service('planer','https://planer.orke.pl/','planer.orke.pl'),
+    certup: new Service('certup','https://certup.pl/','certup.pl'),
+    logowanieorke: new Service('logowanieorke','https://logowanie.orke.pl/','logowanie.orke.pl')
 };
 
 runTestServiceStatus(services.profimatura);
@@ -31,6 +33,9 @@ runTestServiceStatus(services.disneyenglishkursy);
 runTestServiceStatus(services.empikschool);
 runTestServiceStatus(services.zdaszto);
 runTestServiceStatus(services.profikids);
+runTestServiceStatus(services.planer);
+runTestServiceStatus(services.certup);
+runTestServiceStatus(services.logowanieorke);
 
 Scheduler.startDailyMail(function(){
     mailer.sendMail([
@@ -39,7 +44,9 @@ Scheduler.startDailyMail(function(){
         services.disneyenglishkursy,
         services.empikschool,
         services.zdaszto,
-        services.profikids
+        services.planer,
+        services.certup,
+        services.logowanieorke
     ]);
 });
 
