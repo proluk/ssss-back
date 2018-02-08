@@ -1,5 +1,6 @@
 module.exports = class Service {
-    constructor(id, url){
+    constructor(id, url, name){
+        this.name = name;
         this.id = id;
         this.url = url;
         this.status = '';
@@ -10,6 +11,9 @@ module.exports = class Service {
     }
     getId(){
         return this.id;
+    }
+    getName(){
+        return this.name;
     }
     getStatus(){
         return this.status;
