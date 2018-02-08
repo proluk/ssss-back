@@ -83,7 +83,13 @@ class App extends Component {
           <Service serviceName="zdasz.to" serviceId="zdaszto"/>
         </SocketProvider>
         <SocketProvider>
-          <Service serviceName="profikids.pl" serviceId="profikids"/>
+          <Service serviceName="planer.orke.pl" serviceId="planer"/>
+        </SocketProvider>
+        <SocketProvider>
+          <Service serviceName="certup.pl" serviceId="certup"/>
+        </SocketProvider>
+        <SocketProvider>
+          <Service serviceName="logowanie.orke.pl" serviceId="logowanieorke"/>
         </SocketProvider>
       </div>
     );
