@@ -32,7 +32,6 @@ runTestServiceStatus(services.profilingua);
 runTestServiceStatus(services.disneyenglishkursy);
 runTestServiceStatus(services.empikschool);
 runTestServiceStatus(services.zdaszto);
-runTestServiceStatus(services.profikids);
 runTestServiceStatus(services.planer);
 runTestServiceStatus(services.certup);
 runTestServiceStatus(services.logowanieorke);
