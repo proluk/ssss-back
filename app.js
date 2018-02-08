@@ -21,7 +21,8 @@ let services = {
     profilingua: new Service('profilingua','https://www.profi-lingua.pl','profi-lingua.pl'),
     disneyenglishkursy: new Service('disneyenglishkursy','https://disneyenglishkursy.pl','disneyenglishkursy.pl'),
     empikschool: new Service('empikschool','https://empikschool.com','empikschool.com'),
-    zdaszto: new Service('zdaszto','https://zdasz.to','zdasz.to')
+    zdaszto: new Service('zdaszto','https://zdasz.to','zdasz.to'),
+    profikids: new Service('profikids','https://profikids.pl','profikids.pl')
 };
 
 runTestServiceStatus(services.profimatura);
@@ -29,6 +30,7 @@ runTestServiceStatus(services.profilingua);
 runTestServiceStatus(services.disneyenglishkursy);
 runTestServiceStatus(services.empikschool);
 runTestServiceStatus(services.zdaszto);
+runTestServiceStatus(services.profikids);
 
 Scheduler.startDailyMail(function(){
     mailer.sendMail([
@@ -36,7 +38,8 @@ Scheduler.startDailyMail(function(){
         services.profilingua,
         services.disneyenglishkursy,
         services.empikschool,
-        services.zdaszto
+        services.zdaszto,
+        services.profikids
     ]);
 });
 
@@ -61,11 +64,11 @@ io.on('connection', (client) => {
 function runTestServiceStatus(service){
     console.log("Run test service ("+chalk.hex('#FF0572')(service.getName())+") Time: "+chalk.hex('#FF0572')(service.getTime())+"");
     request.get(service.getUrl()).on('error', function(error){
-        services[service.getId()].changeValues(JSON.stringify(error), new Date());
+        services[service.getId()].changeValues(error, new Date());
         io.sockets.emit('updateStatus', {
             service: service.getId(),
             timestamp: new Date(),
-            status: JSON.stringify(error)
+            status: error
         });
         mailer.sendErrorMail(service);
         setTimeout(() => {

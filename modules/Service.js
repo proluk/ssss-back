@@ -16,7 +16,7 @@ module.exports = class Service {
         return this.name;
     }
     getStatus(){
-        return this.status;
+        return this.status.code != undefined ? this.status.code : this.status;
     }
     getTime(){
         return this.timestamp;
