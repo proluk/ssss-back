@@ -4,7 +4,7 @@ module.exports = class Service {
         this.id = id;
         this.url = url;
         this.status = '';
-        this.timestamp = '';
+        this.timestamp = new Date();
     }
     getUrl(){
         return this.url;
@@ -17,6 +17,9 @@ module.exports = class Service {
     }
     getStatus(){
         return this.status;
+    }
+    getTime(){
+        return this.timestamp;
     }
     changeValues(status, timestamp){
         this.status = status;

@@ -1,6 +1,7 @@
 module.exports = class Mail {
-    constructor(nodemailer){
+    constructor(nodemailer, chalk){
         this.nodemailer = nodemailer;
+        this.chalk = chalk;
         this.smtp = {
             host: 'smtp.gmail.com',
             port: 465,
@@ -13,11 +14,12 @@ module.exports = class Mail {
         this.transporter = this.nodemailer.createTransport(this.smtp);
     }
     testConnection(){
-        this.transporter.verify(function(err, suc){
+        console.log(this.chalk.hex('#00F900')("Try to connect to SMTP..."));
+        this.transporter.verify((err, suc) => {
             if ( err ) {
-                console.log(err);
+                console.log(this.chalk.hex('#FF050C')(err));
             } else {
-                console.log("Connected to SMTP");
+                console.log(this.chalk.hex('#00F900')("Connected to SMTP"));
             }
         });
     }
@@ -34,7 +36,6 @@ module.exports = class Mail {
         return preparedHTML;
     }
     sendMail(array){
-        console.log(this.prepareHTML(array));
         this.transporter.sendMail({
             from: 'ssss-powiadomienia@gmail.com',
             to: ['Lukasz_Prokopiuk@wsip.com.pl','Sylwia_Besz-Miazga@wsip.com.pl','Artur_Stopinski@wsip.com.pl','Marcin_Lochowski@wsip.com.pl'],

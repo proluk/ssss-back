@@ -5,12 +5,16 @@ const Service = require('./modules/Service');
 const Mail = require('./modules/Mail');
 const express = require('express');
 const Scheduler = require('./modules/Schedule');
+const chalk = require('chalk');
 const app = express();
+const port = 8082;
 
 app.set('view engine', 'ejs');
 
-let mailer = new Mail(nodemailer);
-mailer.testConnection();
+io.listen(port);
+console.log(chalk.hex('#00F900')('Sockets are listening on port: '+port));
+
+let mailer = new Mail(nodemailer, chalk);
 
 let services = {
     profimatura: new Service('profimatura','https://profimatura.pl','profimatura.pl'),
@@ -36,6 +40,10 @@ Scheduler.startDailyMail(function(){
     ]);
 });
 
+
+
+mailer.testConnection();
+
 io.on('connection', (client) => {
 
     io.sockets.emit('updateSockectsNumber',{sockets: Object.keys(io.sockets.server.engine.clients).length});
@@ -51,7 +59,7 @@ io.on('connection', (client) => {
 });
 
 function runTestServiceStatus(service){
-    console.log("Start testing function for service: "+service.getId());
+    console.log("Run test service ("+chalk.hex('#FF0572')(service.getName())+") Time: "+chalk.hex('#FF0572')(service.getTime())+"");
     request.get(service.getUrl()).on('error', function(error){
         services[service.getId()].changeValues(JSON.stringify(error), new Date());
         io.sockets.emit('updateStatus', {
@@ -75,7 +83,3 @@ function runTestServiceStatus(service){
         }, 1800000);               
     });
 }
-
-const port = 8082;
-io.listen(port);
-console.log('listening on port ', port);
