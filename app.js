@@ -70,25 +70,21 @@ io.on('connection', (client) => {
 function runTestServiceStatus(service){
     console.log("Run test service ("+chalk.hex('#FF0572')(service.getName())+") Time: "+chalk.hex('#FF0572')(service.getTime())+"");
     request.get(service.getUrl()).on('error', function(error){
-        services[service.getId()].changeValues(error, new Date());
-        io.sockets.emit('updateStatus', {
-            service: service.getId(),
-            timestamp: new Date(),
-            status: error
+        services[service.getId()].changeValues(error, new Date(), () => {
+            io.sockets.emit('updateStatus', {
+                service: services[service.getId()].getId(),
+                timestamp: services[service.getId()].getTime(),
+                status: error
+            });
+            mailer.sendErrorMail(service);            
         });
-        mailer.sendErrorMail(service);
-        setTimeout(() => {
-            runTestServiceStatus(service);
-        }, 1800000);
     }).on('response',function(response) {
-        services[service.getId()].changeValues(response.statusCode, new Date());
-        io.sockets.emit('updateStatus', {
-            service: service.getId(),
-            timestamp: new Date(),
-            status: response.statusCode
+        services[service.getId()].changeValues(response.statusCode, new Date(), () => {
+            io.sockets.emit('updateStatus', {
+                service:  services[service.getId()].getId(),
+                timestamp: services[service.getId()].getTime(),
+                status: response.statusCode
+            });            
         });
-        setTimeout(() => {
-            runTestServiceStatus(service);
-        }, 1800000);               
     });
 }

@@ -29,8 +29,9 @@ module.exports = class Service {
     getTime(){
         return this.timestamp;
     }
-    changeValues(status, timestamp){
+    changeValues(status, timestamp, callback){
         this.status = status;
         this.timestamp = timestamp;
+        callback();
     }
 }
