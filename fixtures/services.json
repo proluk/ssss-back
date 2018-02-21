@@ -1,0 +1,42 @@
+[
+    {
+        "id": "profimatura",
+        "url": "https://profimatura.pl",
+        "name": "profimatura.pl" 
+    },
+    {
+        "id": "profilingua",
+        "url": "https://www.profi-lingua.pl",
+        "name": "profi-lingua.pl"
+    },
+    {
+        "id": "disneyenglishkursy",
+        "url": "https://disneyenglishkursy.pl",
+        "name": "disneyenglishkursy.pl"
+    },
+    {
+        "id": "empikschool",
+        "url": "https://empikschool.com",
+        "name": "empikschool.com"
+    },
+    {
+        "id": "zdaszto",
+        "url": "https://zdasz.to",
+        "name": "zdasz.to"
+    },
+    {
+        "id": "planer",
+        "url": "https://planer.orke.pl/",
+        "name": "planer.orke.pl"
+    },
+    {
+        "id": "certup",
+        "url": "https://certup.pl/",
+        "name": "certup.pl"
+    },
+    {
+        "id": "logowanieorke",
+        "url": "https://logowanie.orke.pl/",
+        "name": "logowanie.orke.pl"
+    }
+]

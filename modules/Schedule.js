@@ -1,13 +1,13 @@
 const schedule = require('node-schedule');
 
-class Schedule{
-    constructor(){
+class Schedule {
+    constructor() {
         this.dailyMailRule = new schedule.RecurrenceRule();
-        this.dailyMailRule.dayOfWeek = [new schedule.Range(0,6)];
+        this.dailyMailRule.dayOfWeek = [new schedule.Range(0, 6)];
         this.dailyMailRule.hour = 6;
         this.dailyMailRule.minute = 0;
     }
-    startDailyMail(func){
+    startDailyMail(func) {
         this.dailyMail = schedule.scheduleJob(this.dailyMailRule, () => {
             func();
         });

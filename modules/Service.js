@@ -1,37 +1,58 @@
-module.exports = class Service {
-    constructor(id, url, name){
-        this.name = name;
-        this.id = id;
-        this.url = url;
-        this.status = '';
-        this.timestamp = new Date();
+var mongoose = require('mongoose');
+var test = require('socket.io');
+
+
+var serviceSchema = mongoose.Schema({
+    name: {
+        type: String,
+    },
+    id: {
+        type: String,
+    },
+    url: {
+        type: String
+    },
+    status: {
+        type: String
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now
     }
-    getUrl(){
-        return this.url;
-    }
-    getId(){
-        return this.id;
-    }
-    getName(){
-        return this.name;
-    }
-    getStatus(){
-        if ( this.status.code != undefined ) {
-            if ( this.status.code == 'EAI_AGAIN' ) {
-                return 'DNS lookup timed out error';
-            } else {
-                return this.status.code;
-            }
+});
+
+serviceSchema.methods.getUrl = function () {
+    return this.url;
+};
+
+serviceSchema.methods.getId = function () {
+    return this.id;
+};
+
+serviceSchema.methods.getName = function () {
+    return this.name;
+};
+
+serviceSchema.methods.getStatus = function () {
+    if (this.status.code != undefined) {
+        if (this.status.code == 'EAI_AGAIN') {
+            return 'DNS lookup timed out error';
         } else {
-            return this.status
+            return this.status.code;
         }
+    } else {
+        return this.status;
     }
-    getTime(){
-        return this.timestamp;
-    }
-    changeValues(status, timestamp, callback){
-        this.status = status;
-        this.timestamp = timestamp;
-        callback();
-    }
-}
+};
+
+serviceSchema.methods.getTime = function () {
+    return this.timestamp;
+};
+
+serviceSchema.methods.changeValues = function (status, timestamp, callback) {
+    this.status = status;
+    this.timestamp = timestamp;
+    callback();
+};
+
+var Service = module.exports = mongoose.model('service', serviceSchema);
