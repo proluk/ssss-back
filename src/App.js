@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SocketProvider from './SocketProvider';
 import Service from './Service';
-// eslint-disable-next-line
 import socket from 'socket.io-client';
 import SocketStatus from './SocketStatus';
 import SocketStatusInfo from './SocketStatusInfo';
@@ -16,17 +15,18 @@ class App extends Component {
     this.state = {
       socketConnection: false,
       mouseOver: false,
-      sockets: 0
+      sockets: 0,
+      services: []
     };
 
-    this.socket = socket('http://172.16.1.103:8082');
+    this.socket = socket('http://localhost:3000');
   }
   componentDidMount() {
     this.socket.on('updateSockectsNumber', (data) => {
       this.setState({
         sockets: data.sockets
       });
-    })
+    });
     this.socket.on('connect', () => {
       this.setState({
         socketConnection: true
@@ -35,6 +35,12 @@ class App extends Component {
     this.socket.on('disconnect', () => {
       this.setState({
         socketConnection: false
+      });
+    });
+    this.socket.on('servicelist', (services) => {
+      console.log(services);
+      this.setState({
+        services: services
       });
     });
   }
@@ -67,30 +73,13 @@ class App extends Component {
             <MdPerson />{this.state.sockets}
           </span>
         </header>
-        <SocketProvider>
-          <Service serviceName="profimatura.pl" serviceId="profimatura"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="profi-lingua.pl" serviceId="profilingua"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="disneyenglishkursy.pl" serviceId="disneyenglishkursy"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="empikschool.com" serviceId="empikschool"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="zdasz.to" serviceId="zdaszto"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="planer.orke.pl" serviceId="planer"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="certup.pl" serviceId="certup"/>
-        </SocketProvider>
-        <SocketProvider>
-          <Service serviceName="logowanie.orke.pl" serviceId="logowanieorke"/>
-        </SocketProvider>
+        {this.state.services.map((elem, index)=>{
+          return (
+            <SocketProvider>
+              <Service serviceName={elem.name} serviceId={elem.id}/>
+            </SocketProvider>
+          );
+        })}
       </div>
     );
   }
