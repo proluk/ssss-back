@@ -73,7 +73,7 @@ class App extends Component {
             <MdPerson />{this.state.sockets}
           </span>
         </header>
-        <div className="App-service-list">
+        <div className="App-service-list" onDragOver="allowDrop(event)">
         {this.state.services.map((element, index)=>{
           return (
               <Service {...element} socket={this.socket}/>

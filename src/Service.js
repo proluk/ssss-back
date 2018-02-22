@@ -18,9 +18,9 @@ class Service extends Component {
     }
 
     componentDidMount() {
-        // this.props.socket.on('updateStatus', (data) => {
-        //     data.service === this.state.service ? this.updateStatus(data) : this.process();
-        // });
+        this.props.socket.on('updateStatus', (data) => {
+            data.service === this.state.service ? this.updateStatus(data) : this.process();
+        });
         // this.props.socket.on('setCurrentState', (data) => {
         //     data.services[this.state.service] !== undefined ? this.setCurrentState(data.services[this.state.service]) : this.process();
         // });
@@ -31,20 +31,19 @@ class Service extends Component {
     disconnected(data){
         this.setState({
             serviceName: this.props.name,
-            status: 'disconnected',
-            timestamp: 'disconnected'
+            serviceStatus: 'disconnected',
+            serviceTime: 'disconnected'
         });
     }
     process(){
         //recieved socket call but it was not for this service
     }
-    // updateStatus(data){
-    //     this.setState({
-    //         serviceName: this.props.serviceName,
-    //         status: data.status,
-    //         timestamp: data.timestamp
-    //     });
-    // }
+    updateStatus(data){
+        this.setState({
+            serviceStatus: data.status,
+            serviceTime: data.timestamp
+        });
+    }
     // setCurrentState(data){
     //     this.setState({
     //         status: data.status,
@@ -62,11 +61,10 @@ class Service extends Component {
         });
     }
     render(){
-        const date = this.state.serviceTime.split('T');
         const color = this.state.serviceStatus == '200' ? 'green' : 'red';
         const bgColor = this.state.serviceStatus == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
-        const status = this.state.serviceStatus.code != undefined ? this.state.status.code : this.state.status;
+        const status = this.state.serviceStatus.code != undefined ? this.state.serviceStatus.code : this.state.serviceStatus;
         return (
             <div className="ServiceBlock" style={{order:this.state.serviceOrder}}>
                 <div className="ServiceBlock-title">
@@ -80,7 +78,7 @@ class Service extends Component {
                 </div>
 
                 <div className="ServiceBlock-time">
-                    <MdAccessTime className="Time"/> {date[0]} : {date[1]}
+                    <MdAccessTime className="Time"/> {new Date(this.state.serviceTime).toLocaleString()}
                 </div>
 
             </div>
