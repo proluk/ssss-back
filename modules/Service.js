@@ -13,11 +13,16 @@ var serviceSchema = mongoose.Schema({
         type: String
     },
     status: {
-        type: String
+        type: String,
+        default: ""
     },
     timestamp: {
         type: Date,
         default: Date.now
+    },
+    order: {
+        type: Number,
+        default: 0
     }
 });
 
@@ -49,10 +54,16 @@ serviceSchema.methods.getTime = function () {
     return this.timestamp;
 };
 
-serviceSchema.methods.changeValues = function (status, timestamp, callback) {
+// serviceSchema.methods.changeValues = function (status, timestamp, callback) {
+//     this.status = status;
+//     this.timestamp = timestamp;
+//     callback(this);
+// };
+
+serviceSchema.methods.setStatus = function(status, callback) {
     this.status = status;
-    this.timestamp = timestamp;
-    callback();
+    this.timestamp = new Date();
+    callback(this);
 };
 
 var Service = module.exports = mongoose.model('service', serviceSchema);

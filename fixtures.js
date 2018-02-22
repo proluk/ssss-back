@@ -13,8 +13,7 @@ var test = new Service();
 Service.find({}, (err, res) => {
     if ( res.length > 0 ) {
         res.forEach((service) => {
-            var {id} = service;
-            arr = compare(id);
+            arr = compare(service.id);
         });
         Service.insertMany(arr, function(err, res){
             console.log(res.length+' services added');
@@ -28,8 +27,7 @@ Service.find({}, (err, res) => {
 
 function compare(id_model) {
     services.forEach(function(service, index){
-        var {id} = service;
-        if(id_model === id ) {
+        if(id_model === service.id ) {
             services.splice(index, 1);
         }
     });

@@ -20,7 +20,7 @@ console.log(chalk.hex('#00F900')('Sockets are listening on port: ' + process.env
 
 Service.find({}, (err, res) => {
     res.forEach((service) => {
-        // runTestServiceStatus(service);
+        runTestServiceStatus(service);
     });
     // Scheduler.startDailyMail(function () {
     //     mailer.sendMail(res);
@@ -30,19 +30,20 @@ Service.find({}, (err, res) => {
 // mailer.testConnection();
 
 io.on('connection', (client) => {
-
+    console.log("client connected");
     io.sockets.emit('updateSockectsNumber', {
         sockets: Object.keys(io.sockets.server.engine.clients).length
     });
 
     client.on('disconnect', function () {
+        console.log("client disconnected");
         io.sockets.emit('updateSockectsNumber', {
             sockets: Object.keys(io.sockets.server.engine.clients).length
         });
     });
 
-    client.emit('setCurrentState', {
-        services
+    Service.find({}, (err, res) => {
+        client.emit("servicelist",res);
     });
 
 });
@@ -50,13 +51,11 @@ io.on('connection', (client) => {
 function runTestServiceStatus(service) {
     console.log("Run test service (" + chalk.hex('#FF0572')(service.getName()) + ") Time: " + chalk.hex('#FF0572')(service.getTime()) + "");
     request.get(service.getUrl()).on('error', function (error) {
-        service.changeValues(error, new Date(), () => {
+        service.setStatus(error, (updatedService) => {
             io.sockets.emit('updateStatus', {
-                service: service.getId(),
-                timestamp: service.getTime(),
-                status: error
+                updatedService
             });
-            mailer.sendErrorMail(service);
+            mailer.sendErrorMail(updatedService);
         });
         Service.findOneAndUpdate({
             id: service.getId()
@@ -64,11 +63,9 @@ function runTestServiceStatus(service) {
             if (err) console.log(err);
         });
     }).on('response', function (response) {
-        service.changeValues(response.statusCode, new Date(), () => {
+        service.setStatus(response.statusCode, (updatedService) => {
             io.sockets.emit('updateStatus', {
-                service: service.getId(),
-                timestamp: service.getTime(),
-                status: response.statusCode
+                updatedService
             });
         });
         Service.findOneAndUpdate({
