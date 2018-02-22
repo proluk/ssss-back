@@ -7,6 +7,10 @@ body {
   text-align: center;
 }
 
+.App-service-list{
+  display: flex;
+  flex-direction: column;
+}
 
 .App-header {
   font-family: 'Audiowide', cursive;

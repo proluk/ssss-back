@@ -8,27 +8,29 @@ class Service extends Component {
         super(props);
         this.state = {
             mouseOver: false,
-            serviceName : this.props.serviceName,
-            service : this.props.serviceId,
-            status: '',
-            timestamp: ''
+            serviceName : this.props.name,
+            serviceId : this.props.id,
+            serviceTime : this.props.timestamp,
+            serviceUrl : this.props.url,
+            serviceStatus : this.props.status,
+            serviceOrder : this.props.order
         }
     }
 
     componentDidMount() {
-        this.props.socket.on('updateStatus', (data) => {
-            data.service === this.state.service ? this.updateStatus(data) : this.process();
-        });
-        this.props.socket.on('setCurrentState', (data) => {
-            data.services[this.state.service] !== undefined ? this.setCurrentState(data.services[this.state.service]) : this.process();
-        });
+        // this.props.socket.on('updateStatus', (data) => {
+        //     data.service === this.state.service ? this.updateStatus(data) : this.process();
+        // });
+        // this.props.socket.on('setCurrentState', (data) => {
+        //     data.services[this.state.service] !== undefined ? this.setCurrentState(data.services[this.state.service]) : this.process();
+        // });
         this.props.socket.on('disconnect', (data) => {
             data.service === this.state.service ? this.disconnected(data) : this.process();
         });
     }
     disconnected(data){
         this.setState({
-            serviceName: this.props.serviceName,
+            serviceName: this.props.name,
             status: 'disconnected',
             timestamp: 'disconnected'
         });
@@ -36,19 +38,19 @@ class Service extends Component {
     process(){
         //recieved socket call but it was not for this service
     }
-    updateStatus(data){
-        this.setState({
-            serviceName: this.props.serviceName,
-            status: data.status,
-            timestamp: data.timestamp
-        });
-    }
-    setCurrentState(data){
-        this.setState({
-            status: data.status,
-            timestamp: data.timestamp
-        });
-    }
+    // updateStatus(data){
+    //     this.setState({
+    //         serviceName: this.props.serviceName,
+    //         status: data.status,
+    //         timestamp: data.timestamp
+    //     });
+    // }
+    // setCurrentState(data){
+    //     this.setState({
+    //         status: data.status,
+    //         timestamp: data.timestamp
+    //     });
+    // }
     mouseEnter = () => {
         this.setState({
             mouseOver: true
@@ -60,13 +62,13 @@ class Service extends Component {
         });
     }
     render(){
-        const date = this.state.timestamp.split('T');
-        const color = this.state.status == '200' ? 'green' : 'red';
-        const bgColor = this.state.status == '200' ? 'bggreen' : 'bgred';
+        const date = this.state.serviceTime.split('T');
+        const color = this.state.serviceStatus == '200' ? 'green' : 'red';
+        const bgColor = this.state.serviceStatus == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
-        const status = this.state.status.code != undefined ? this.state.status.code : this.state.status;
+        const status = this.state.serviceStatus.code != undefined ? this.state.status.code : this.state.status;
         return (
-            <div className="ServiceBlock">
+            <div className="ServiceBlock" style={{order:this.state.serviceOrder}}>
                 <div className="ServiceBlock-title">
                     {this.state.serviceName}
                 </div>

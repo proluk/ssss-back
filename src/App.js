@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SocketProvider from './SocketProvider';
+// import SocketProvider from './SocketProvider';
 import Service from './Service';
 import socket from 'socket.io-client';
 import SocketStatus from './SocketStatus';
@@ -73,13 +73,13 @@ class App extends Component {
             <MdPerson />{this.state.sockets}
           </span>
         </header>
-        {this.state.services.map((elem, index)=>{
+        <div className="App-service-list">
+        {this.state.services.map((element, index)=>{
           return (
-            <SocketProvider>
-              <Service serviceName={elem.name} serviceId={elem.id}/>
-            </SocketProvider>
+              <Service {...element} socket={this.socket}/>
           );
         })}
+        </div>
       </div>
     );
   }
