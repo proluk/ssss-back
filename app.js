@@ -42,7 +42,6 @@ io.on('connection', (client) => {
     });
 
     client.on('disconnect', function () {
-        console.log("client disconnected");
         io.sockets.emit('updateSockectsNumber', {
             sockets: Object.keys(io.sockets.server.engine.clients).length
         });
@@ -55,7 +54,7 @@ io.on('connection', (client) => {
     client.on('changeOrder', (data) => {
         async.eachSeries(data, (obj, done) => {
             Service.update({id: obj}, { $set: {order: data.indexOf(obj)}}, (err) => {
-                console.log(err);
+                err ? console.log(err) : null;
                 done();
             });
 
@@ -69,12 +68,13 @@ io.on('connection', (client) => {
 });
 
 function runTestServiceStatus(service) {
-    console.log("Run test service (" + chalk.hex('#FF0572')(service.getName()) + ") Time: " + chalk.hex('#FF0572')(service.getTime()) + "");
+    console.log("Run test service: " + chalk.hex('#FF0572')(service.getName()) );
     request.get(service.getUrl()).on('error', function (error) {
         service.setStatus(error, (updatedService) => {
             io.sockets.emit('updateStatus', {
                 updatedService
             });
+            console.log("Error for service: "+chalk.hex("#FF0527")(service.getName()) );
             mailer.sendErrorMail(updatedService);
         });
         Service.findOneAndUpdate({
@@ -82,16 +82,26 @@ function runTestServiceStatus(service) {
         }, service, {}, function (err) {
             if (err) console.log(err);
         });
+        setTimeout(() => {
+            runTestServiceStatus(service);
+        }, 1800000);
     }).on('response', function (response) {
         service.setStatus(response.statusCode, (updatedService) => {
             io.sockets.emit('updateStatus', {
                 updatedService
             });
+            console.log(
+                "Test end for service: "+chalk.hex("#FF0527")(service.getName())+
+                " Status: "+chalk.hex("#05B305")(response.statusCode)+
+                " Time: "+chalk.hex("#E0DD06")(new Date().toLocaleString()) );
         });
         Service.findOneAndUpdate({
             id: service.getId()
         }, service, {}, function (err, test) {
             if (err) console.log(err);
         });
+        setTimeout(() => {
+            runTestServiceStatus(service);
+        }, 1800000);
     });
 }
