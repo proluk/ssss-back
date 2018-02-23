@@ -20,26 +20,16 @@ class Service extends Component {
 
     componentDidMount() {
         this.props.socket.on('updateStatus', (data) => {
-            data.service === this.state.service ? this.updateStatus(data) : this.process();
-        });
-        // this.props.socket.on('setCurrentState', (data) => {
-        //     data.services[this.state.service] !== undefined ? this.setCurrentState(data.services[this.state.service]) : this.process();
-        // });
-        this.props.socket.on('disconnect', (data) => {
-            data.service === this.state.service ? this.disconnected(data) : this.process();
-        });
-    }
-    disconnected(data){
-        this.setState({
-            serviceName: this.props.name,
-            serviceStatus: 'disconnected',
-            serviceTime: 'disconnected'
+            console.log("socket update");
+            console.log(data.updatedService, this.state.serviceId);
+            data.updatedService.id=== this.state.serviceId ? this.updateStatus(data) : this.process();
         });
     }
     process(){
         //recieved socket call but it was not for this service
     }
     updateStatus(data){
+        console.log("updated");
         this.setState({
             serviceStatus: data.status,
             serviceTime: data.timestamp
@@ -70,7 +60,6 @@ class Service extends Component {
         const color = this.state.serviceStatus == '200' ? 'green' : 'red';
         const bgColor = this.state.serviceStatus == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
-        const status = this.state.serviceStatus !== undefined ? this.state.serviceStatus.code : this.state.serviceStatus;
         return (
             <div className="ServiceBlock" data-key={this.state.serviceId}>
                 <div className="ServiceBlock-title">
@@ -79,7 +68,7 @@ class Service extends Component {
                 <div className={"ServiceBlock-status "+ color} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
                     <MdCloudCircle className="Time"/>
                     <div className={"ServiceBlock-status-more "+visible+" "+bgColor}>
-                        Status<br/>{status}
+                        Status<br/>{this.state.serviceStatus}
                     </div>
                 </div>
                 <div className="ServiceBlock-settings" onClick={this.showServiceSettings}>

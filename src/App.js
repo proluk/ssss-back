@@ -50,6 +50,7 @@ class App extends Component {
       });
     });
     this.socket.on('servicelist', (services) => {
+      this.forceUpdate();
       this.setState({
         services: services
       });
