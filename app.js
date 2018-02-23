@@ -14,7 +14,7 @@ const app = express();
 mongoose.connect(process.env.DB_HOST);
 
 mongoClient.connect(function(err){
-    console.log(err);
+    err ? console.log(err) : null;
 });
 
 app.set('view engine', 'ejs');
@@ -53,9 +53,7 @@ io.on('connection', (client) => {
     });
 
     client.on('changeOrder', (data) => {
-        console.log(data);
         async.eachSeries(data, (obj, done) => {
-            console.log(data.indexOf(obj));
             Service.update({id: obj}, { $set: {order: data.indexOf(obj)}}, (err) => {
                 console.log(err);
                 done();
