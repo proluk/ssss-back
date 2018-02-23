@@ -8,8 +8,14 @@ const express = require('express');
 const Scheduler = require('./modules/Schedule');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
+const mongoClient = require('./modules/Mongo');
+const async = require('async');
 const app = express();
 mongoose.connect(process.env.DB_HOST);
+
+mongoClient.connect(function(err){
+    console.log(err);
+});
 
 app.set('view engine', 'ejs');
 
@@ -43,7 +49,23 @@ io.on('connection', (client) => {
     });
 
     Service.find({}, (err, res) => {
-        client.emit("servicelist",res);
+        client.emit("servicelist", res);
+    });
+
+    client.on('changeOrder', (data) => {
+        console.log(data);
+        async.eachSeries(data, (obj, done) => {
+            console.log(data.indexOf(obj));
+            Service.update({id: obj}, { $set: {order: data.indexOf(obj)}}, (err) => {
+                console.log(err);
+                done();
+            });
+
+        }, (err) => {
+            Service.find({}, (err, res) => {
+                io.sockets.emit("servicelist", res);
+            });
+        });
     });
 
 });
