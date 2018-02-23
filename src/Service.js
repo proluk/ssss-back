@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {MdAccessTime, MdCloudCircle} from 'react-icons/lib/md';
+import {MdAccessTime, MdCloudCircle, MdSettings} from 'react-icons/lib/md';
 import './Service.css';
 
 class Service extends Component {
@@ -8,6 +8,7 @@ class Service extends Component {
         super(props);
         this.state = {
             mouseOver: false,
+            settingsOpen: false,
             serviceName : this.props.name,
             serviceId : this.props.id,
             serviceTime : this.props.timestamp,
@@ -60,13 +61,18 @@ class Service extends Component {
             mouseOver: false
         });
     }
+    showServiceSettings = () => {
+        this.setState({
+            
+        })
+    }
     render(){
         const color = this.state.serviceStatus == '200' ? 'green' : 'red';
         const bgColor = this.state.serviceStatus == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
-        const status = this.state.serviceStatus.code != undefined ? this.state.serviceStatus.code : this.state.serviceStatus;
+        const status = this.state.serviceStatus !== undefined ? this.state.serviceStatus.code : this.state.serviceStatus;
         return (
-            <div className="ServiceBlock" style={{order:this.state.serviceOrder}}>
+            <div className="ServiceBlock" data-key={this.state.serviceId}>
                 <div className="ServiceBlock-title">
                     {this.state.serviceName}
                 </div>
@@ -76,11 +82,17 @@ class Service extends Component {
                         Status<br/>{status}
                     </div>
                 </div>
-
+                <div className="ServiceBlock-settings" onClick={this.showServiceSettings}>
+                    <MdSettings />
+                </div>
                 <div className="ServiceBlock-time">
                     <MdAccessTime className="Time"/> {new Date(this.state.serviceTime).toLocaleString()}
                 </div>
-
+                {/* <div className="ServiceBlockSettings-container">
+                    <div className={"ServiceBlockSettings-content "+this.state.settingsOpen}>
+                        <div className="ServiceBlockSettings-exit">x</div>
+                    </div>
+                </div> */}
             </div>
         );
     }

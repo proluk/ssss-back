@@ -1,3 +1,5 @@
+@import '../node_modules/dragula/dist/dragula.css';
+
 .ServiceBlock{
     display: block;
     margin: 5px;
@@ -7,6 +9,7 @@
     padding: 5px;
     height: 50px;
     font-family: 'Open Sans';
+    transition: all 500ms;
 }
 
     .ServiceBlock-title{
@@ -15,6 +18,15 @@
         left:5px;
         font-size:18px;
     }
+    .ServiceBlock-settings{
+        position: absolute;
+        font-size: 17px;
+        top:5px;
+        right:5px;
+    }
+        .ServiceBlock-settings:hover{
+            cursor: pointer;
+        }
     .ServiceBlock-status{
         position: absolute;
         font-size: 12px;

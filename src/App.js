@@ -5,6 +5,7 @@ import Service from './Service';
 import socket from 'socket.io-client';
 import SocketStatus from './SocketStatus';
 import SocketStatusInfo from './SocketStatusInfo';
+import dragula from 'react-dragula';
 import {MdPerson} from 'react-icons/lib/md';
 import './App.css';
 
@@ -22,6 +23,17 @@ class App extends Component {
     this.socket = socket('http://localhost:3000');
   }
   componentDidMount() {
+    this.drake = dragula([document.querySelector('.App-service-list')], {
+      mirrorContainer: document.body,
+    });
+    this.drake.on('drop', () => {
+      let services = document.querySelectorAll('.ServiceBlock');
+      let orderedList = [];
+      services.forEach(element => {
+        orderedList.push(element.getAttribute('data-key'));
+      });
+      this.socket.emit('changeOrder', orderedList);
+    });
     this.socket.on('updateSockectsNumber', (data) => {
       this.setState({
         sockets: data.sockets
@@ -38,7 +50,6 @@ class App extends Component {
       });
     });
     this.socket.on('servicelist', (services) => {
-      console.log(services);
       this.setState({
         services: services
       });
@@ -73,11 +84,13 @@ class App extends Component {
             <MdPerson />{this.state.sockets}
           </span>
         </header>
-        <div className="App-service-list" onDragOver="allowDrop(event)">
+        <div className="App-service-list container">
         {this.state.services.map((element, index)=>{
           return (
-              <Service {...element} socket={this.socket}/>
+              <Service key={element.id} {...element} socket={this.socket}/>
           );
+        }).sort((a,b)=> {
+          return a.props.order - b.props.order;
         })}
         </div>
       </div>
