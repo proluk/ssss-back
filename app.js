@@ -27,7 +27,9 @@ Scheduler.startServiceTest( () => {
     let promises = [];
     Service.find({}, (err, res) => {
         res.forEach((service) => {
-            promises.push(runTestServiceStatus(service));
+            promises.push(runTestServiceStatus(service).catch((err)=>{
+                console.log(err);
+            }));
         });
         Promise.all(promises).then((data) => {
             Service.find({}, (err, res) => {
@@ -38,7 +40,9 @@ Scheduler.startServiceTest( () => {
 });
 Service.find({}, (err, res) => {
     res.forEach((service) => {
-        runTestServiceStatus(service);
+        runTestServiceStatus(service).catch((err)=>{
+            console.log(err);
+        });
     });
     // Scheduler.startDailyMail(function () {
     //     mailer.sendMail(res);
