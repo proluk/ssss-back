@@ -22,7 +22,7 @@ app.set('view engine', 'ejs');
 io.listen(process.env.SOCKETS_PORT);
 console.log(chalk.hex('#00F900')('Sockets are listening on port: ' + process.env.SOCKETS_PORT));
 
-// let mailer = new Mail(nodemailer, chalk);
+let mailer = new Mail(nodemailer, chalk);
 Scheduler.startServiceTest( () => {
     let promises = [];
     Service.find({}, (err, res) => {
@@ -44,12 +44,12 @@ Service.find({}, (err, res) => {
             console.log(err);
         });
     });
-    // Scheduler.startDailyMail(function () {
-    //     mailer.sendMail(res);
-    // });
+    Scheduler.startDailyMail(function () {
+        mailer.sendMail(res);
+    });
 });
 
-// mailer.testConnection();
+mailer.testConnection();
 
 io.on('connection', (client) => {
     console.log("client connected");
@@ -86,10 +86,17 @@ io.on('connection', (client) => {
 const runTestServiceStatus = (service) => {
     return new Promise((resolve, reject) => {
         console.log("Run test service: " + chalk.hex('#FF0572')(service.getName()) );
-        request.get(service.getUrl()).on('error', function (error) {
+        request.get({
+            url: service.getUrl(),
+            strictSSL: false,
+            headers: {
+                'content-type': 'text/html'
+            }
+        }).on('error', function (error) {
+            console.log(error);
             service.setStatus(error, (updatedService) => {
                 console.log("Error for service: "+chalk.hex("#FF0527")(service.getName()) );
-                mailer.sendErrorMail(updatedService);
+                //mailer.sendErrorMail(updatedService);
             });
             Service.findOneAndUpdate({
                 id: service.getId()
