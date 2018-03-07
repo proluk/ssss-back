@@ -17,30 +17,9 @@ class Service extends Component {
             serviceOrder : this.props.order
         }
     }
-
-    componentDidMount() {
-        this.props.socket.on('updateStatus', (data) => {
-            console.log("socket update");
-            console.log(data.updatedService, this.state.serviceId);
-            data.updatedService.id=== this.state.serviceId ? this.updateStatus(data) : this.process();
-        });
-    }
     process(){
         //recieved socket call but it was not for this service
     }
-    updateStatus(data){
-        console.log("updated");
-        this.setState({
-            serviceStatus: data.status,
-            serviceTime: data.timestamp
-        });
-    }
-    // setCurrentState(data){
-    //     this.setState({
-    //         status: data.status,
-    //         timestamp: data.timestamp
-    //     });
-    // }
     mouseEnter = () => {
         this.setState({
             mouseOver: true
@@ -57,8 +36,8 @@ class Service extends Component {
         })
     }
     render(){
-        const color = this.state.serviceStatus == '200' ? 'green' : 'red';
-        const bgColor = this.state.serviceStatus == '200' ? 'bggreen' : 'bgred';
+        const color = this.props.status == '200' ? 'green' : 'red';
+        const bgColor = this.props.status == '200' ? 'bggreen' : 'bgred';
         const visible = this.state.mouseOver ? 'show' : 'hide';
         return (
             <div className="ServiceBlock" data-key={this.state.serviceId}>
@@ -68,14 +47,14 @@ class Service extends Component {
                 <div className={"ServiceBlock-status "+ color} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
                     <MdCloudCircle className="Time"/>
                     <div className={"ServiceBlock-status-more "+visible+" "+bgColor}>
-                        Status<br/>{this.state.serviceStatus}
+                        Status<br/>{this.props.status}
                     </div>
                 </div>
                 <div className="ServiceBlock-settings" onClick={this.showServiceSettings}>
                     <MdSettings />
                 </div>
                 <div className="ServiceBlock-time">
-                    <MdAccessTime className="Time"/> {new Date(this.state.serviceTime).toLocaleString()}
+                    <MdAccessTime className="Time"/> {new Date(this.props.timestamp).toLocaleString()}
                 </div>
                 {/* <div className="ServiceBlockSettings-container">
                     <div className={"ServiceBlockSettings-content "+this.state.settingsOpen}>
