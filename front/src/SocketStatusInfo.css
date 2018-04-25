@@ -1,0 +1,13 @@
+.socket-status-info{
+    position:absolute;
+    font-family: Arial;
+    top:90%;
+    right:110%;
+    text-align: center;
+    color: #000;
+    background-color: #fff;
+    padding: 10px;
+    width: 160px;
+    font-size: 13px;
+    border-radius: 15px 0px 15px 15px;
+}

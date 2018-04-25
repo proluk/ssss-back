@@ -1,0 +1,78 @@
+@import '../node_modules/dragula/dist/dragula.css';
+
+.ServiceBlock{
+    display: block;
+    margin: 5px;
+    background-color: #fff;
+    color: #333333;
+    position: relative;
+    padding: 5px;
+    height: 50px;
+    font-family: 'Open Sans';
+    transition: all 500ms;
+}
+
+    .ServiceBlock-title{
+        position: absolute;
+        top:5px;
+        left:5px;
+        font-size:18px;
+    }
+    .ServiceBlock-settings{
+        position: absolute;
+        font-size: 17px;
+        top:5px;
+        right:5px;
+    }
+        .ServiceBlock-settings:hover{
+            cursor: pointer;
+        }
+    .ServiceBlock-status{
+        position: absolute;
+        font-size: 12px;
+        bottom:5px;
+        right:5px;
+    }   
+        .ServiceBlock-status:hover{
+            cursor: pointer;
+        }
+        .ServiceBlock-status-more{
+            z-index: 100;
+            text-align: left;
+            padding: 5px 15px;
+            position: absolute;
+            top: 105%;
+            right: 105%;
+            width:200px;
+            color: #fff;
+            background-color: #fff;
+            border-radius: 10px 0px 10px 10px;
+        }
+        .show{
+            display: inline-block;
+        }
+        .hide{
+            display: none;
+        }
+    .ServiceBlock-time{
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        font-size:12px;
+    }
+    .Time{
+        padding-bottom: 3px;
+        font-size: 16px;
+    }
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
+    }
+    .bggreen{
+        background-color: green;
+    }
+    .bgred{
+        background-color: red;
+    }
